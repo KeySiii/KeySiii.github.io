@@ -1,0 +1,92 @@
+@font-face 
+{
+font-family: Pompadur;
+src: url(Pompadur.ttf);
+}
+h1
+{
+font-family:Pompadur, Comic Sans MS, arial;
+ font-size: 50px;
+ color: navy;
+ font-style: italic;
+ font-weight: bold;
+}
+p
+{
+font-family:Times New Roman, Comic Sans MS, arial;
+ font-size: 15px;
+ color: blue;
+ font-style: italic;
+ font-weight: bold;
+background-color: white;
+}
+body
+{
+text-align: center
+}
+body
+{
+background-image: url(imagesii.jpg);
+background-repeat: no-repeat; 
+background-position: top center; 
+background-attachment: fixed
+}
+img
+{
+width: 50px
+height: 50px;
+ border-style: double;
+ border-width: 2px;
+ border-color: yellow;
+ padding: 5px;
+}
+#sostav
+{
+text-align: left;
+color: maroon;
+}
+h2
+{
+font-family:Times New Roman, Comic Sans MS, arial;
+color: maroon;
+}
+#process
+{
+text-align: left;
+color: maroon;
+}
+#store
+{
+height: 100%;
+   background-color: #F2F5A9;
+   width: 1250px;
+   margin: 0 auto;
+   border-radius: 30px 100px 0 20px;
+}
+.qwe
+{
+display: block;
+widht: 200px;
+height: 200px;
+}
+#pizza1
+{
+background-image: url("pizza.png")
+}
+#pizza2
+{
+background-image: url("pizza4.jpg")
+}
+h3
+{
+color: maroon;
+}
+li
+{
+font-size: 20px;
+}
+#silki
+{
+text-align: left;
+color: maroon;
+}
