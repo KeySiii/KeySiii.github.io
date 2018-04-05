@@ -1,0 +1,134 @@
+button
+{text-decoration:none; text-align:center; 
+ padding:9px 27px; 
+ border:outset 2px #004F72; 
+ -webkit-border-radius:16px;
+ -moz-border-radius:16px; 
+ border-radius: 16px; 
+ font:17px "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+ font-weight:bold; 
+ color:#9e0b1c; 
+ background-color:#144a5c; 
+ background-image: -moz-linear-gradient(top, #144a5c 0%, #57c6eb 100%); 
+ background-image: -webkit-linear-gradient(top, #144a5c 0%, #57c6eb 100%); 
+ background-image: -o-linear-gradient(top, #144a5c 0%, #57c6eb 100%); 
+ background-image: -ms-linear-gradient(top, #144a5c 0% ,#57c6eb 100%); 
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#57c6eb', endColorstr='#57c6eb',GradientType=0 ); 
+ background-image: linear-gradient(top, #144a5c 0% ,#57c6eb 100%);   
+ -webkit-box-shadow:1px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
+ -moz-box-shadow: 1px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
+ box-shadow:1px 0px 2px #bababa, inset 0px 0px 1px #ffffff;  
+  text-shadow: 1px 0px 2px #e82323; 
+ filter: dropshadow(color=#e82323, offx=1, offy=0);
+  }
+ .button: hover
+ {
+ padding:9px 27px; 
+ border:outset 2px #004F72; 
+ -webkit-border-radius:16px;
+ -moz-border-radius:16px; 
+ border-radius: 16px; 
+ font:17px "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+ font-weight:bold; 
+ color:#9e0b1c; 
+ background-color:#1f177a; 
+ background-image: -moz-linear-gradient(top, #1f177a 0%, #4f58bf 100%); 
+ background-image: -webkit-linear-gradient(top, #1f177a 0%, #4f58bf 100%); 
+ background-image: -o-linear-gradient(top, #1f177a 0%, #4f58bf 100%); 
+ background-image: -ms-linear-gradient(top, #1f177a 0% ,#4f58bf 100%); 
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f58bf', endColorstr='#4f58bf',GradientType=0 ); 
+ background-image: linear-gradient(top, #1f177a 0% ,#4f58bf 100%);   
+ -webkit-box-shadow:1px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
+ -moz-box-shadow: 1px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
+ box-shadow:1px 0px 2px #bababa, inset 0px 0px 1px #ffffff;  
+  text-shadow: 1px 0px 2px #e82323; 
+ filter: dropshadow(color=#e82323, offx=1, offy=0);
+ }
+ .button: active
+ {
+ padding:9px 27px; 
+ border:outset 2px #004F72; 
+ -webkit-border-radius:16px;
+ -moz-border-radius:16px; 
+ border-radius: 16px; 
+ font:17px "Palatino Linotype", "Book Antiqua", Palatino, serif; 
+ font-weight:bold; 
+ color:#9e0b1c; 
+ background-color:#f22958; 
+ background-image: -moz-linear-gradient(top, #f22958 0%, #e7eef0 100%); 
+ background-image: -webkit-linear-gradient(top, #f22958 0%, #e7eef0 100%); 
+ background-image: -o-linear-gradient(top, #f22958 0%, #e7eef0 100%); 
+ background-image: -ms-linear-gradient(top, #f22958 0% ,#e7eef0 100%); 
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e7eef0', endColorstr='#e7eef0',GradientType=0 ); 
+ background-image: linear-gradient(top, #f22958 0% ,#e7eef0 100%);   
+ -webkit-box-shadow:1px 0px 2px #bababa, inset 0px 0px 1px #ffffff; 
+ -moz-box-shadow: 1px 0px 2px #bababa,  inset 0px 0px 1px #ffffff;  
+ box-shadow:1px 0px 2px #bababa, inset 0px 0px 1px #ffffff;  
+  text-shadow: 1px 0px 2px #e82323; 
+ filter: dropshadow(color=#e82323, offx=1, offy=0);}
+ input {
+	padding: 7px 23px;
+    font-weight: 400;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    line-height: 24px;
+    outline: none;
+    border: 2px solid #0d0635;
+    border-radius: 20px;
+	background-color:#FFFFE0 ;
+	color:  #0d0635;
+}
+input::-moz-placeholder { 
+    color:  #0d0635;
+ }
+input::-webkit-input-placeholder {
+    color:  #0d0635; 
+	}
+ body
+ {
+ 	background-image: url(fon.jpg);
+ }
+#output
+{
+font-family: Comic Sans MS, Arial , sans-serif;
+ font-size: 30px;
+ color: #88001b;
+}
+.pop
+{ 
+width:1000px;
+height:356px;
+background-color:#ADD8E6;
+margin: auto;
+}
+#stage
+{
+width: 700px;
+ height: 100px;
+ position: relative;
+ top:10px;
+ left:100px;
+ background-color:  #ADD8E6
+}
+#scale
+{
+ width: 700px;
+ height: 50px;
+ position: absolute;
+ top: 45px;
+ left: 0px;
+ background-image: url(shkala.png);
+}
+#arrow
+{
+ width: 30px;
+ height: 50px;
+ position: absolute;
+ top: 10px;
+ left: 0px;
+ background-image: url(arrow.png);
+\
+-webkit-transition: left 0.5s ease-out 0s;
+ -moz-transition: left 0.5s ease-out 0s;
+ transition: left 0.5s ease-out 0s;
+}
