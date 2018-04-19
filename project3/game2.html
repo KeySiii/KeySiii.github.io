@@ -1,0 +1,158 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Атака инопланетян</title>
+<link  rel="stylesheet" href="styleKSS.css">
+<body>
+<div id="main">
+<h1>"Угости" Гомера пончиком!</h1>
+<div id="stage">
+ <div id="background"></div>
+ <div id="cannon"></div>
+ <div id="alien"></div>
+ <div id="missile"></div>
+ <div id="explosion"></div>
+</div>
+<p id="output">Введите X (0–560) и Y (0–500),
+<br>Затем кликни по кнопке "Снаряд!"</p>
+<input id="inputX" type="text" placeholder="X..." size = "15">
+<input id="inputY" type="text" placeholder="Y..." size = "15">
+<button>Снаряд!</button>
+</div>
+</body>
+<script>
+//Переменные игры
+var alienX = 280;
+var alienY = 40;
+var guessX = 0;
+var guessY = 0;
+var shotsRemaining = 8;
+var shotsMade = 0;
+var gameState = "";
+var gameWon = false;
+//Объекты игры
+var cannon = document.querySelector("#cannon");
+var alien = document.querySelector("#alien");
+var missile = document.querySelector("#missile");
+var explosion = document.querySelector("#explosion");
+//Отслеживание нажатия клавиши Enter 
+window.addEventListener("keydown", keydownHandler, false); 
+//Поля ввода и вывода
+var inputX = document.querySelector("#inputX");
+var inputY = document.querySelector("#inputY");
+var output = document.querySelector("#output");
+//Кнопка
+var button = document.querySelector("button");
+button.style.cursor = "pointer";
+button.addEventListener("click", clickHandler, false);
+function render()
+{
+ //Позиция пришельца
+ alien.style.left = alienX + "px";
+ alien.style.top = alienY + "px";
+ //Позиция орудия
+ cannon.style.left = guessX + "px";
+ //Позиция ракеты
+ missile.style.left = guessX + "px";
+ missile.style.top = guessY + "px";
+}
+function keydownHandler(event) 
+{ 
+if(event.keyCode === 13) 
+{ 
+validateInput(); 
+} 
+}
+function clickHandler()
+{
+ validateInput();
+}
+function validateInput()
+{
+guessX = parseInt(inputX.value);
+guessY = parseInt(inputY.value);
+if(isNaN(guessX) || isNaN(guessY))
+{
+output.innerHTML = "Пожалуйста, введи число. ";
+}
+else if(guessX > 560 || guessX < 0)
+{
+output.innerHTML = "Значение X должно быть от 0 до 560! ";
+}
+else if(guessY > 500 || guessY < 0)
+{
+output.innerHTML = "Значение Y должно быть от 0 до 500! ";
+}
+else
+{
+playGame();
+}
+}
+function playGame()
+{
+ shotsRemaining -= 1;
+ shotsMade += 1;
+ gameState = "<br>Выстрелы: " + shotsMade + ". Осталось: "
+ + shotsRemaining + ".";
+ guessX = parseInt(inputX.value);
+ guessY = parseInt(inputY.value);
+ //Анализ: Находятся ли введенные игроком
+ //координаты X и Y внутри области цели
+ if(guessX >= alienX && guessX <= alienX + 40)
+ {
+ //В горизонтальном направлении X находятся,
+ //теперь проверим вертикальное направление Y
+ if(guessY >= alienY && guessY <= alienY + 40)
+ {
+ //Совпадение по обоим направлениям, т.е. цель поражена!
+ gameWon = true;
+ endGame();
+ }
+ }
+ else
+ {
+ output.innerHTML = "Промазал!Попробуй еще раз!" + gameState;
+ //Проверка на конец игры
+ if (shotsRemaining < 1)
+ {
+ endGame();
+ }
+ }
+ //Изменение позиции пришельца, если игра еще не выиграна
+ if(!gameWon)
+ {
+ //Изменение координаты X пришельца
+ alienX = Math.floor(Math.random() * 560);
+ //Добавим 30 к координате Y, чтобы новая позиция
+ //пришельца стала ниже и приблизилась к земле
+ alienY += 60;
+ }
+ //Обновление отображения нового состояния игры
+ render(); console.log("X: " + alienX);
+ console.log("Y: " + alienY);
+}
+function endGame()
+{
+ if(gameWon)
+ {
+ output.innerHTML
+ = "Победа! Гомер наелся и счастлив!" + "<br>"
+ + "Израсходовано пончиков: " + shotsMade + ".";
+ explosion.style.display = "block";
+alien.style.display = "none";
+missile.style.display = "none";
+explosion.style.left = alienX + "px";
+explosion.style.top = alienY + "px";
+ }
+ else
+ {
+ output.innerHTML
+ = "Вы проиграли!" + "<br>" + "Гомер добрался до ваших запасов и съел все пончики!";
+ }
+button.removeEventListener("click", clickHandler, false);
+button.disabled = true;
+inputХ.placeholder = "Конец ";
+inputХ.placeholder = "игры! ";
+inputХ.disabled = true;
+inputY.disabled = true;
+}
+</script>
