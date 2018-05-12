@@ -1,0 +1,443 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Приключения в ГУУ </title>
+<body>
+<img src="" width="500" height="400">
+<p id="output"></p>
+<input id="input" type="text" placeholder="Ваше действие ..." autofocus>
+<button>Продолжить</button>
+</body>
+<style>
+#map
+{
+position: center;
+}
+#button
+{
+	position: center;
+}
+
+body
+{
+	background-image: url(bg.jpg);
+	text-align:center;
+
+}
+
+button 
+
+{ 
+
+font-family: Arial, Helvetica, sans-serif; 
+
+font-size: 14px; 
+
+color: #fff; 
+
+padding: 10px 20px; 
+
+border: 2px solid #000; 
+
+cursor: pointer; 
+
+-webkit-border-radius: 10px; 
+
+-moz-border-radius: 10px; 
+
+border-radius: 10px; 
+
+background:-webkit-linear-gradient(top, #a3a3a3, #000); 
+
+background:-moz-linear-gradient(top, #a3a3a3, #000); 
+
+background: linear-gradient(top, #a3a3a3, #000); 
+
+-webkit-box-shadow: 5px 5px 3px rgba(0,0,0,0.5); 
+
+-moz-box-shadow: 5px 5px 3px rgba(0,0,0,0.5); 
+
+box-shadow: 5px 5px 3px rgba(0,0,0,0.5); 
+
+-webkit-user-select: none; 
+
+-moz-user-select: none; 
+
+user-select: none; 
+
+} 
+
+button:hover 
+
+{ 
+
+background: -webkit-linear-gradient(top, #acc7a3, #506651); 
+
+background: -moz-linear-gradient(top, #acc7a3, #506651); 
+
+background: linear-gradient(top, #acc7a3, #506651); 
+
+} 
+
+button:active 
+
+{ 
+
+background: -webkit-linear-gradient(top, #858565, #c5c9a9); 
+
+background: -moz-linear-gradient(top, #858565, #c5c9a9); 
+
+background: linear-gradient(top, #858565, #c5c9a9); 
+
+} 
+</style>
+<script>
+//Создание карты
+var map = [];
+  map[0] = "Кафетерий";
+  map[1] = "Cтуденческий городок";
+  map[2] = "Общежитие №2";
+  map[3] = "Бизнес-центр";
+  map[4] = "Главная площадь ГУУ";
+  map[5] = "Деканат ИИСа";
+  map[6] = "Кабинет выдачи пропусков";
+  map[7] = "Спортивный комлпекс";
+  map[8] = "Регистрационный учет";
+//Установка начальной позиции игрока
+var mapLocation = 4;
+//Создание массива имен файлов с изображениями
+var images = [];
+  images[0] = "kletka.jpg";
+  images[1] = "dogovor.jpg";
+  images[2] = "ob.jpg";
+  images[3] = "bc.jpg";
+  images[4] = "mainpl.jpg";
+  images[5] = "iis.jpg";
+  images[6] = "prop.jpg";
+  images[7] = "sk.jpg";
+  images[8] = "migr.jpg";
+  //Создание массива сообщений о заблокированных маршрутах
+var blockedPathMessages = [];
+  blockedPathMessages[0] = "В кафе большая очередь, есть риск задержаться";
+  blockedPathMessages[1] = "Нет смысла подниматься на этаж выше, там только учебные аудитории";
+  blockedPathMessages[2] = "Комендант не пускает вас далее";
+  blockedPathMessages[3] = "На этом территория ГУУ заканчивается, дальше забор"
+  blockedPathMessages[4] = "";
+  blockedPathMessages[5] = "Дверь заперта, скорее всего,снова перерыв";
+  blockedPathMessages[6] = "Охранник настрожено смотрит на тебя, лучше туда не идти";
+  blockedPathMessages[7] = "У тебя нет с собой формы, так что в спорткомплекс тебя не пустят";
+  blockedPathMessages[8] = "Дальше конец этажа, пути нет";
+  //Создание помощника
+var helpMessages = [];
+  helpMessages[0] = "";
+  helpMessages[1] = "Обычно договоры заключаются только при предъявлении удостоверения личности, стоит попробовать";
+  helpMessages[2] = "Стоят турникеты...Интересно чтоже надо к ним приложить, чтобы попасть в общагу?";
+  helpMessages[3] = "";
+  helpMessages[4] = "";
+  helpMessages[5] = "";
+  helpMessages[6] = "Тут сидят очень серьезные люди, без доказательства о проживании в общежитии пропуск не выдадут";
+  helpMessages[7] = "";
+  helpMessages[8] = "Чтобы зарегистрироваться, надо знать куда регистрировать.А где же может быть написан адрес вашего общежития?";
+//Создание предметов и их местоположения
+var items = ["паспорт"]
+var itemLocations = [4];
+//Массив, содержащий предметы, которые несет игрок
+var backpack = [];
+//Инициализация ввода игрока
+var playersInput = "";
+//Инициализация текста сообщения
+var gameMessage = "";
+//Массив допустимых в игре действий и переменная,
+//в которой хранится текущее действие игрока
+var actionsIKnow = ["север", "восток", "юг", "запад", "взять","помощь",
+"использовать", "выбросить"];
+var action = "";
+//Массив доступных в игре предметов и переменная,
+//в которой хранится упомянутый игроком предмет
+var itemsIKnow = ["договор", "паспорт","регистрацию","пропуск"]
+var item = "";
+//Ссылка на элемент img
+var image = document.querySelector("img");
+//Поля ввода и вывода
+var output = document.querySelector("#output");
+var input = document.querySelector("#input");
+//Кнопка
+var button = document.querySelector("button");
+button.style.cursor = "pointer";
+button.addEventListener("click", clickHandler, false);
+//Отображение текущего положения игрока
+render();
+window.addEventListener("keydown", keydownHandler, false);
+function keydownHandler(event)
+{
+  if(event.keyCode === 13)
+  {
+    clickHandler();
+  }
+}
+function clickHandler()
+{
+  playGame();
+}
+function takeItem()
+{
+  //Поиск индекса указанного игроком предмета в массиве items
+  var itemIndexNumber = items.indexOf(item);
+  //Присутсвует ли предмет там, где находится игрок?
+  if(itemIndexNumber !== -1
+  && itemLocations[itemIndexNumber] === mapLocation)
+  {
+    gameMessage = "Вы взяли " + item + ".";
+    //Добавление предмета в рюкзак игрока
+    backpack.push(item);
+    //Удаление предмета из игрового мира
+    items.splice(itemIndexNumber, 1);
+    itemLocations.splice(itemIndexNumber, 1);
+    //Вывод в консоли для тестирования
+    console.log("Предметы МИРА: " + items);
+    console.log("Предметы РЮКЗАКА: " + backpack);
+  }
+  else
+  {
+    //Сообщение при попытке игрока взять недоступный предмет
+    gameMessage = "Вы не можете это сделать. " + itemIndexNumber;
+  }
+}
+function dropItem()
+{
+  //Попытаемся выбросить предмет только, если рюкзак не пуст
+  if(backpack.length !== 0)
+  {
+    //Поиск номера предмета в рюкзаке
+    var backpackIndexNumber = backpack.indexOf(item);
+    //Предмет в рюкзаке, если backpackIndex не равен -1
+    if(backpackIndexNumber !== -1)
+      {
+        //Сообщение игроку о том, что он выбросил
+        gameMessage = "Вы бросили " + item + ".";
+        //Возврат предмета в игровой мир
+        items.push(backpack[backpackIndexNumber]);
+        itemLocations.push(mapLocation);
+        //Удаление предмета из рюкзака
+        backpack.splice(backpackIndexNumber, 1);
+      }
+    else
+    {
+      //Сообщение игроку при попытке выбросить то, чего нет
+      gameMessage = "Вы не можете это сделать.";
+    }
+  }
+  else
+  {
+    //Сообщение игроку если рюкзак пустой
+    gameMessage = "У вас ничего нет.";
+  }
+}
+function useItem()
+{
+  //1. Поиск предмета в рюкзаке
+  //Поиск индекса предмета в рюкзаке
+  var backpackIndexNumber = backpack.indexOf(item);
+  //Если индекс равен -1, предмета нет в рюкзаке,
+  //сообщим об этом игроку
+  if(backpackIndexNumber === -1)
+  {
+    gameMessage = "У вас этого нет.";
+  }
+  // Если в рюкзаке ничего нет, сообщим об этом игроку
+  if(backpack.length === 0)
+  {
+    gameMessage += " У вас ничего нет";
+  }
+  //2. Если предмет есть в рюкзаке, используем его
+  if(backpackIndexNumber !== -1)
+  {
+    switch(item)
+    {
+      case "договор":
+      if(mapLocation === 8)
+      {
+        gameMessage = "Сотрудница отдела мило улыбается вам.";
+        gameMessage += " Ознакомившись с договором,";
+        gameMessage += " вручает вам регистрацию!";
+		//Удаление камня из рюкзака
+          backpack.splice(backpackIndexNumber, 1);
+        //Добавим меч в мир
+        items.push("регистрацию")
+        itemLocations.push(mapLocation);
+      }
+      else
+      {
+        gameMessage = "Вы бессмыслено вчитываетесь в содержание договора,";
+        gameMessage += " но не понимаете зачем он здесь нужен";
+      }
+      break;
+      case "паспорт":
+        if(mapLocation === 1)
+        {
+          gameMessage = " Вы предъявили паспорт,";
+          gameMessage += " и вам заключили договор!";
+          //Удаление камня из рюкзака
+          backpack.splice(backpackIndexNumber, 1);
+          //Добавление барабана в игровой мир
+          items.push("договор")
+          itemLocations.push(mapLocation);
+          helpMessages[mapLocation] = "";
+          }
+          else
+          {
+          gameMessage = "Вы вертите паспорт в руках";
+          }
+          break;
+		   case "регистрацию":
+          if(mapLocation ===6)
+          {
+            gameMessage = "Отсканировав регистрацию, вас внесли в базу данных";
+            gameMessage += " и, наконец, выдали вам электронный пропуск";
+			 //Удаление камня из рюкзака
+          backpack.splice(backpackIndexNumber, 1);
+		     //Добавление барабана в игровой мир
+          items.push("пропуск")
+          itemLocations.push(mapLocation);
+          helpMessages[mapLocation] = "";
+          }
+          else
+          {
+            gameMessage = "Вы используете регистрацию в виде веера, но даже это вам не помогает";
+          }
+          break;
+		  case "пропуск":
+		      if(mapLocation === 2)
+			   {
+            gameMessage = "Вы прикладываете пропуск к турникету и попадаете в общежитие!";
+            gameMessage += " Вы в своей комнате, и не будете ночевать на улице!!";
+			}
+			else
+			 {
+			  gameMessage = "Вы рассматриваете пропуск, пробуете его на зубок";
+			}
+		  
+    }
+        }
+     }
+function playGame()
+{
+  //Чтение ввода игрока и преобразование его в нижний регистр.
+  playersInput = input.value;
+  playersInput = playersInput.toLowerCase();
+  //Сброс значений предыдущего хода игрока
+  gameMessage = "";
+  action = "";
+  //Анализ выбранного игроком действия
+  for(i = 0; i < actionsIKnow.length; i++)
+  {
+    if(playersInput.indexOf(actionsIKnow[i]) !== -1)
+    {
+      action = actionsIKnow[i];
+      console.log("Действие игрока: " + action);
+      break;
+    }
+  }
+  //Анализ выбранного игроком предмета
+  for(i = 0; i < itemsIKnow.length; i++)
+  {
+    if(playersInput.indexOf(itemsIKnow[i]) !== -1)
+    {
+      item = itemsIKnow[i];
+      console.log("Выбранный игроком предмет: " + item);
+    }
+  }
+  //Выполнение действия игрока
+  switch(action)
+  {
+  case "помощь":
+  //Отображение подсказки, если она есть для этой области мира
+  if(helpMessages[mapLocation] !== "")
+  {
+    gameMessage = helpMessages[mapLocation] + " ";
+  }
+  gameMessage += "Попробуйте одно из слов: "
+  gameMessage += "север, восток, юг, запад, взять, выбросить, ";
+  gameMessage += "использовать, паспорт, договор, регистрацию, пропуск";
+  break;
+  case "север":
+  if(mapLocation >= 3)
+  {
+    mapLocation -= 3;
+  }
+  else
+  {
+    gameMessage = blockedPathMessages[mapLocation];
+  }
+  break;
+  case "восток":
+  if(mapLocation % 3 != 2)
+  {
+    mapLocation += 1;
+  }
+  else
+  {
+    gameMessage = blockedPathMessages[mapLocation];
+  }
+  break;
+  case "юг":
+  if(mapLocation < 6)
+  {
+    mapLocation += 3;
+  }
+  else
+  {
+    gameMessage = blockedPathMessages[mapLocation];
+  }
+  break;
+  case "запад":
+  if(mapLocation % 3 != 0)
+  {
+    mapLocation -= 1;
+  }
+  else
+  {
+    gameMessage = blockedPathMessages[mapLocation];
+  }
+  break;
+  case "взять":
+  takeItem()
+  break;
+  case "выбросить":
+  dropItem();
+  break;
+  case "использовать":
+  useItem();
+  break;
+  default:
+  gameMessage = "Я этого не понимаю.";
+  }
+  //Воспроизведение хода игрока
+  render();
+}
+function render()
+{
+  //Отображение новой позиции игрока
+  output.innerHTML = map[mapLocation];
+  image.src = "images/" + images[mapLocation];
+  //Отображение предмета, если он есть в этом месте
+  //1. Цикл по всем предметам игры
+  for(var i = 0; i < items.length; i++)
+  {
+    //Выяснение, есть ли предмет в этом месте
+    if(mapLocation === itemLocations[i])
+    {
+      //Отображение предмета
+      output.innerHTML
+      += "<br>Вы видите здесь <strong>" + items[i] + "</strong>.";
+    }
+  }
+  //Отображение сообщения
+  output.innerHTML += "<br><em>" + gameMessage + "</em>";
+  //Отображение содержимого рюкзака игрока
+  if(backpack.length !== 0)
+  {
+    output.innerHTML += "<br>Вы несете: "
+    + backpack.join(" ") ;
+	}
+	}
+</script>
